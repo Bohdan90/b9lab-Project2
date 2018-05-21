@@ -31,29 +31,19 @@ class App extends Component {
         contractInstance = await  services.getContract(web3Instance);
         userList = await  services.getAccounts(web3Instance);
         this.updateBalance();
-        await this.getAccounts();
+        //await this.getAccounts();
     }
 
-    async getAccounts() {
-        var firstAcc = await  this.getFirstAcc();
-        var secAcc = await  this.getSecAcc();
-        var thirdAcc = await  this.getThirdAcc();
-        this.setState({
-            firstAcc: firstAcc,
-            secondAcc: secAcc,
-            thirdAcc: thirdAcc
-        })
 
-
-    }
 
 
     async updateBalance() {
-        this.setState({storageValue: await services.getContractBalance(contractInstance)});
+        this.setState({storageValue: await services.getContractTokenBalance(contractInstance, userList[0])});
     }
 
     async handleSubmit(event) {
         event.preventDefault();
+
         await  services.payFunct(contractInstance, this.state.value, userList[0]);
         this.updateBalance();
     }
@@ -62,43 +52,48 @@ class App extends Component {
         this.setState({value: event.target.value});
     }
 
-    splitMoney() {
-        services.splitFunct(contractInstance, userList[0]);
+    returnMoney() {
+        services.returnMoney(contractInstance, userList[0]);
+        this.updateBalance();
+    }
+    reckoningMoney() {
+        services.reckoningFunct('Qwerty1','Qwerty2',contractInstance, userList[0]);
         this.updateBalance();
     }
 
-    async getFirstAcc() {
-        var res = await  services.getFirstAddr(contractInstance, userList[0]);
-        return res;
-    }
 
-    async getSecAcc() {
-        let res = await  services.getSecAcc(contractInstance, userList[0]);
-        return res;
-    }
+    // async getFirstAcc() {
+    //     var res = await  services.getFirstAddr(contractInstance, userList[0]);
+    //     return res;
+    // }
+    //
+    // async getSecAcc() {
+    //     let res = await  services.getSecAcc(contractInstance, userList[0]);
+    //     return res;
+    // }
+    //
+    // async getThirdAcc() {
+    //     let res = await  services.getThirdAcc(contractInstance, userList[0]);
+    //     return res;
+    // }
 
-    async getThirdAcc() {
-        let res = await  services.getThirdAcc(contractInstance, userList[0]);
-        return res;
-    }
 
-
-    async getFirstAccBalance() {
-       var res = await  services.getFirstAddrBal(contractInstance);
-       alert("First Account balance is: " + res)
-    }
-
-    async getSecAccBalance() {
-        var res = await  services.getSecondAddrBal(contractInstance);
-        alert("Second Account balance is: " + res)
-
-    }
-
-    async getThirdAccBalance() {
-        var res =  await  services.getThirdAddrBal(contractInstance);
-        alert("Third Account balance is:  " + res)
-
-    }
+    // async getFirstAccBalance() {
+    //    var res = await  services.getFirstAddrBal(contractInstance);
+    //    alert("First Account balance is: " + res)
+    // }
+    //
+    // async getSecAccBalance() {
+    //     var res = await  services.getSecondAddrBal(contractInstance);
+    //     alert("Second Account balance is: " + res)
+    //
+    // }
+    //
+    // async getThirdAccBalance() {
+    //     var res =  await  services.getThirdAddrBal(contractInstance);
+    //     alert("Third Account balance is:  " + res)
+    //
+    // }
 
     async destroy() {
         await  services.destroyContract(contractInstance, userList[0]);
@@ -123,11 +118,11 @@ class App extends Component {
                                 <input type="submit" value="Submit"/>
 
                             </form>
-                            <button onClick={this.splitMoney.bind(this)}>Split Money</button><br/>
+                            <button onClick={this.returnMoney.bind(this)}>Return Money</button><br/>
 
                             <button onClick={this.getFirstAccBalance.bind(this)}>Get Alice Balance</button>
-                            <button onClick={this.getSecAccBalance.bind(this)}>Get Bob Balance</button>
-                            <button onClick={this.getThirdAccBalance.bind(this)}>Get Carol Balance</button><br/>
+                            {/*<button onClick={this.getSecAccBalance.bind(this)}>Get Bob Balance</button>*/}
+                            {/*<button onClick={this.getThirdAccBalance.bind(this)}>Get Carol Balance</button><br/>*/}
                             <button onClick={this.destroy.bind(this)}>Destroy Contract</button>
 
                             <h2>Current contract balance is: {this.state.storageValue}</h2>

@@ -27,8 +27,8 @@
   ],
   "bytecode": "0x608060405260008054600160a060020a033316600160a060020a0319909116179055610126806100306000396000f30060806040526004361060485763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166383197ef08114604d5780638da5cb5b146061575b600080fd5b348015605857600080fd5b50605f609c565b005b348015606c57600080fd5b50607360de565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b6000543373ffffffffffffffffffffffffffffffffffffffff90811691161460c357600080fd5b60005473ffffffffffffffffffffffffffffffffffffffff16ff5b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058204929ce97e82567d13400143c84e47dd5e191c19459bc94a30f8417b75667c55e0029",
   "deployedBytecode": "0x60806040526004361060485763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166383197ef08114604d5780638da5cb5b146061575b600080fd5b348015605857600080fd5b50605f609c565b005b348015606c57600080fd5b50607360de565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b6000543373ffffffffffffffffffffffffffffffffffffffff90811691161460c357600080fd5b60005473ffffffffffffffffffffffffffffffffffffffff16ff5b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058204929ce97e82567d13400143c84e47dd5e191c19459bc94a30f8417b75667c55e0029",
-  "sourceMap": "48:113:1:-;;;109:5:3;:18;;-1:-1:-1;;;;;117:10:3;109:18;-1:-1:-1;;;;;;109:18:3;;;;;;48:113:1;;;;;;",
-  "deployedSourceMap": "48:113:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;87:72;;8:9:-1;5:2;;;30:1;27;20:12;5:2;87:72:1;;;;;;47:20:3;;8:9:-1;5:2;;;30:1;27;20:12;5:2;47:20:3;;;;;;;;;;;;;;;;;;;;;;;87:72:1;193:5:3;;179:10;193:5;179:19;;;193:5;;179:19;171:28;;;;;;146:5:1;;;;133:19;47:20:3;;;;;;:::o",
+  "sourceMap": "48:113:1:-;;;109:5:2;:18;;-1:-1:-1;;;;;117:10:2;109:18;-1:-1:-1;;;;;;109:18:2;;;;;;48:113:1;;;;;;",
+  "deployedSourceMap": "48:113:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;87:72;;8:9:-1;5:2;;;30:1;27;20:12;5:2;87:72:1;;;;;;47:20:2;;8:9:-1;5:2;;;30:1;27;20:12;5:2;47:20:2;;;;;;;;;;;;;;;;;;;;;;;87:72:1;193:5:2;;179:10;193:5;179:19;;;193:5;;179:19;171:28;;;;;;146:5:1;;;;133:19;47:20:2;;;;;;:::o",
   "source": "pragma solidity ^0.4.4;\nimport \"./Ownable.sol\";\ncontract Destroyable is Ownable {\n\n    function destroy() onlyOwner public {\n        selfdestruct(owner);\n    }\n}",
   "sourcePath": "/root/IdeaProjects/Project2/contracts/Destroyable.sol",
   "ast": {
@@ -58,7 +58,7 @@
         "id": 79,
         "nodeType": "ImportDirective",
         "scope": 93,
-        "sourceUnit": 175,
+        "sourceUnit": 118,
         "src": "24:23:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -72,10 +72,10 @@
               "id": 80,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 174,
+              "referencedDeclaration": 117,
               "src": "72:7:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$174",
+                "typeIdentifier": "t_contract$_Ownable_$117",
                 "typeString": "contract Ownable"
               }
             },
@@ -85,7 +85,7 @@
           }
         ],
         "contractDependencies": [
-          174
+          117
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -93,7 +93,7 @@
         "id": 92,
         "linearizedBaseContracts": [
           92,
-          174
+          117
         ],
         "name": "Destroyable",
         "nodeType": "ContractDefinition",
@@ -114,7 +114,7 @@
                         "name": "owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 153,
+                        "referencedDeclaration": 96,
                         "src": "146:5:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -133,7 +133,7 @@
                       "name": "selfdestruct",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 351,
+                      "referencedDeclaration": 297,
                       "src": "133:12:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_selfdestruct_nonpayable$_t_address_$returns$__$",
@@ -175,7 +175,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 173,
+                  "referencedDeclaration": 116,
                   "src": "106:9:1",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -241,7 +241,7 @@
         "id": 79,
         "nodeType": "ImportDirective",
         "scope": 93,
-        "sourceUnit": 175,
+        "sourceUnit": 118,
         "src": "24:23:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -255,10 +255,10 @@
               "id": 80,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 174,
+              "referencedDeclaration": 117,
               "src": "72:7:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$174",
+                "typeIdentifier": "t_contract$_Ownable_$117",
                 "typeString": "contract Ownable"
               }
             },
@@ -268,7 +268,7 @@
           }
         ],
         "contractDependencies": [
-          174
+          117
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -276,7 +276,7 @@
         "id": 92,
         "linearizedBaseContracts": [
           92,
-          174
+          117
         ],
         "name": "Destroyable",
         "nodeType": "ContractDefinition",
@@ -297,7 +297,7 @@
                         "name": "owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 153,
+                        "referencedDeclaration": 96,
                         "src": "146:5:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -316,7 +316,7 @@
                       "name": "selfdestruct",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 351,
+                      "referencedDeclaration": 297,
                       "src": "133:12:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_selfdestruct_nonpayable$_t_address_$returns$__$",
@@ -358,7 +358,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 173,
+                  "referencedDeclaration": 116,
                   "src": "106:9:1",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -403,5 +403,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-05-21T17:19:48.594Z"
+  "updatedAt": "2018-05-21T18:11:52.994Z"
 }

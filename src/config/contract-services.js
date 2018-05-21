@@ -1,4 +1,4 @@
-import Splitter from '../../build/contracts/Splitter.json'
+import Remittance from '../../build/contracts/Remittance.json'
 import getWeb3 from '../utils/getWeb3'
 import Web3 from 'web3';
 
@@ -14,7 +14,7 @@ export const initWeb3 = async () => {
 
 export const getContract = async (_web3) => {
     const contract = require('truffle-contract')
-    const simpleStorage = contract(Splitter)
+    const simpleStorage = contract(Remittance)
     simpleStorage.setProvider(_web3.currentProvider)
     var simpleStorageInstance = await simpleStorage.deployed();
     return simpleStorageInstance;
@@ -29,37 +29,18 @@ export const getAccounts = (_web3) => {
 export const payFunct = async (contractInstance, count, sender) => {
     await contractInstance.payMoney({from: sender, value: count});
 };
-export const splitFunct = async (contractInstance, sender) => {
-    contractInstance.split({from: sender, gas: 3500000});
+export const reckoningFunct = async (firstPassw,secondPassw,contractInstance, sender) => {
+    contractInstance.reckoning(firstPassw,secondPassw, {from: sender});
 };
 //
-export const getContractBalance = async (contractInstance) => {
-    var balance = await contractInstance.getContractBalance();
+export const getContractTokenBalance = async (contractInstance, sender) => {
+    var balance = await contractInstance.getCurrentSubval({from: sender});
     return balance.toString();
 };
-export const getFirstAddr = async (contractInstance,sender) => {
-    var addr = await contractInstance.getFirstAddr({from: sender});
-    return addr;
+export const returnMoney = async (contractInstance, sender) => {
+    var result = await contractInstance.cashBack( {from: sender});
+    return result;
 };
-export const getSecAcc = async (contractInstance,sender) => {
-    var addr = await contractInstance.getSecondAddr({from: sender});
-    return addr.toString();
-};
-export const getThirdAcc = async (contractInstance,sender) => {
-    var addr = await contractInstance.getThirdAddr({from: sender});
-    return addr.toString();
-};
-export const getFirstAddrBal = async (contractInstance) => {
-    var res = await contractInstance.getFirstAddrBal.call();
-  return res.toString();
-};
-export const getSecondAddrBal = async (contractInstance) => {
-    var res = await contractInstance.getSecondAddrBal.call();
-    return res.toString();
-};
-export const getThirdAddrBal= async (contractInstance) => {
-    var res = await contractInstance.getThirdAddrBal.call();
-    return res.toString();};
 
 
 export const destroyContract = async (contractInstance,sender) => {

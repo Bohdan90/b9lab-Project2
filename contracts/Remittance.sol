@@ -8,8 +8,8 @@ contract Remittance  is Ownable, ConvertShop,Destroyable{
     address private owner;
     uint private finalDate;
     uint256 private currDate;
-    bytes32 passwd1 = keccak256('Qwerty1');
-    bytes32 passwd2 = keccak256('Qwerty2');
+    bytes32 private passwd1 = keccak256('Qwerty1');
+    bytes32 private passwd2 = keccak256('Qwerty2');
 
     function Remittance(uint daysAvailable)
     public
@@ -26,7 +26,8 @@ contract Remittance  is Ownable, ConvertShop,Destroyable{
     }
 
     function getCurrentSubval() public returns (uint){
-        return getTokens();
+        return  getTokens();
+
     }
 
     function payMoney()
