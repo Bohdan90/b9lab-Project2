@@ -62,38 +62,7 @@ class App extends Component {
     }
 
 
-    // async getFirstAcc() {
-    //     var res = await  services.getFirstAddr(contractInstance, userList[0]);
-    //     return res;
-    // }
-    //
-    // async getSecAcc() {
-    //     let res = await  services.getSecAcc(contractInstance, userList[0]);
-    //     return res;
-    // }
-    //
-    // async getThirdAcc() {
-    //     let res = await  services.getThirdAcc(contractInstance, userList[0]);
-    //     return res;
-    // }
 
-
-    // async getFirstAccBalance() {
-    //    var res = await  services.getFirstAddrBal(contractInstance);
-    //    alert("First Account balance is: " + res)
-    // }
-    //
-    // async getSecAccBalance() {
-    //     var res = await  services.getSecondAddrBal(contractInstance);
-    //     alert("Second Account balance is: " + res)
-    //
-    // }
-    //
-    // async getThirdAccBalance() {
-    //     var res =  await  services.getThirdAddrBal(contractInstance);
-    //     alert("Third Account balance is:  " + res)
-    //
-    // }
 
     async destroy() {
         await  services.destroyContract(contractInstance, userList[0]);
@@ -120,9 +89,7 @@ class App extends Component {
                             </form>
                             <button onClick={this.returnMoney.bind(this)}>Return Money</button><br/>
 
-                            <button onClick={this.getFirstAccBalance.bind(this)}>Get Alice Balance</button>
-                            {/*<button onClick={this.getSecAccBalance.bind(this)}>Get Bob Balance</button>*/}
-                            {/*<button onClick={this.getThirdAccBalance.bind(this)}>Get Carol Balance</button><br/>*/}
+                            <button onClick={this.reckoningMoney.bind(this)}>Send tokens</button>
                             <button onClick={this.destroy.bind(this)}>Destroy Contract</button>
 
                             <h2>Current contract balance is: {this.state.storageValue}</h2>

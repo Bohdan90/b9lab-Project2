@@ -1,16 +1,22 @@
 pragma solidity ^0.4.4;
 
-contract ConvertShop{
+contract ConvertShop {
     uint internal tokensAmount;
-    mapping (address => uint) userTokenBalances;
+    mapping(address => uint) userTokenBalances;
 
-    function convert(uint amount)internal returns (bool)
+    event LogConverted(uint);
+    event LogClearened(uint);
+    event LogSended(address, uint);
+
+    function convert(uint amount) internal returns (bool)
     {
+        LogConverted(amount);
         tokensAmount = amount + tokensAmount;
+
         return true;
     }
 
-    function getCurrTokensAddr(address addr)internal returns (uint)
+    function getCurrTokensAddr(address addr) internal returns (uint)
     {
         return userTokenBalances[addr];
     }
@@ -20,16 +26,18 @@ contract ConvertShop{
         return tokensAmount;
     }
 
-    function clearTokenAmount()internal returns (bool)
+    function clearTokenAmount() internal returns (bool)
     {
+        LogClearened(tokensAmount);
         tokensAmount = 0;
         return true;
     }
 
-    function sendTokensTo(address addr)internal returns (bool)
+    function sendTokensTo(address addr) internal returns (bool)
     {
-        userTokenBalances[addr]=tokensAmount;
-        tokensAmount =0;
+        LogSended(addr, tokensAmount);
+        userTokenBalances[addr] = tokensAmount;
+        tokensAmount = 0;
         return true;
     }
 

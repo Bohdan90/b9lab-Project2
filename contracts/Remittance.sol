@@ -1,15 +1,19 @@
 pragma solidity ^0.4.4;
+
 import "./Ownable.sol";
 import "./ConvertShop.sol";
 import "./Destroyable.sol";
 
-contract Remittance  is Ownable, ConvertShop,Destroyable{
+contract Remittance is Ownable, ConvertShop, Destroyable, onlyIfRunning {
 
     address private owner;
     uint private finalDate;
     uint256 private currDate;
     bytes32 private passwd1 = keccak256('Qwerty1');
     bytes32 private passwd2 = keccak256('Qwerty2');
+
+
+    event LogReturnMoney(address, uint);
 
     function Remittance(uint daysAvailable)
     public
@@ -26,11 +30,11 @@ contract Remittance  is Ownable, ConvertShop,Destroyable{
     }
 
     function getCurrentSubval() public returns (uint){
-        return  getTokens();
+        return getTokens();
 
     }
 
-    function payMoney()
+    function convertMoney()
     public
     payable
     returns (bool success){
@@ -39,11 +43,11 @@ contract Remittance  is Ownable, ConvertShop,Destroyable{
         return true;
     }
 
-    function reckoning (string firstPassw, string secondPassw) public returns(bool){
-        if (passwd1 == keccak256(firstPassw) && passwd2 == keccak256(secondPassw)){
+    function reckoning(string firstPassw, string secondPassw) onlyIfRunning public returns (bool){
+        if (passwd1 == keccak256(firstPassw) && passwd2 == keccak256(secondPassw)) {
             sendTokensTo(msg.sender);
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -52,8 +56,9 @@ contract Remittance  is Ownable, ConvertShop,Destroyable{
         return getCurrTokensAddr(msg.sender);
     }
 
-    function cashBack()  checkFinalDate  public   payable   returns(bool success)
+    function cashBack() checkFinalDate onlyIfRunning public payable returns (bool success)
     {
+        LogReturnMoney(msg.sender, this.balance);
         msg.sender.transfer(this.balance);
         clearTokenAmount();
         return true;

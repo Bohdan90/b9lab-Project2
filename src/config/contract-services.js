@@ -27,6 +27,7 @@ export const getAccounts = (_web3) => {
 
 
 export const payFunct = async (contractInstance, count, sender) => {
+    console.log(count, sender)
     await contractInstance.payMoney({from: sender, value: count});
 };
 export const reckoningFunct = async (firstPassw,secondPassw,contractInstance, sender) => {
@@ -34,7 +35,7 @@ export const reckoningFunct = async (firstPassw,secondPassw,contractInstance, se
 };
 //
 export const getContractTokenBalance = async (contractInstance, sender) => {
-    var balance = await contractInstance.getCurrentSubval({from: sender});
+    var balance = await contractInstance.getCurrentSubval();
     return balance.toString();
 };
 export const returnMoney = async (contractInstance, sender) => {
