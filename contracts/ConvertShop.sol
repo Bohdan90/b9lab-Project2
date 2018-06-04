@@ -2,7 +2,9 @@ pragma solidity ^0.4.4;
 
 contract ConvertShop {
     uint internal tokensAmount;
-    mapping(address => uint) userTokenBalances;
+    uint internal cashBackAmount;
+
+    mapping(address => uint) private userTokenBalances;
 
     event LogConverted(uint);
     event LogClearened(uint);
@@ -36,7 +38,8 @@ contract ConvertShop {
     function sendTokensTo(address addr) internal returns (bool)
     {
         LogSended(addr, tokensAmount);
-        userTokenBalances[addr] = tokensAmount;
+        cashBackAmount = cashBackAmount - tokensAmount;
+        userTokenBalances[addr] += tokensAmount;
         tokensAmount = 0;
         return true;
     }

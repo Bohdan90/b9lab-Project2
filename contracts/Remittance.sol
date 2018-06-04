@@ -3,64 +3,55 @@ pragma solidity ^0.4.4;
 import "./Ownable.sol";
 import "./ConvertShop.sol";
 import "./Destroyable.sol";
+import "./Stoppable.sol";
 
-contract Remittance is Ownable, ConvertShop, Destroyable, onlyIfRunning {
+contract Remittance is Stoppable, Destroyable {
 
-    address private owner;
-    uint private finalDate;
-    uint256 private currDate;
-    bytes32 private passwd1 = keccak256('Qwerty1');
-    bytes32 private passwd2 = keccak256('Qwerty2');
+  address private owner;
 
 
-    event LogReturnMoney(address, uint);
+  uint private finalDate;
+  uint256 private currDate;
+  bytes32 private unicPassw;
 
-    function Remittance(uint daysAvailable)
-    public
-    {
-        currDate = now;
-        owner = msg.sender;
-        finalDate = currDate + daysAvailable;
+  event LogMoneySending(address to, uint amount);
+  event LogReturnMoney(address to, uint amount);
+
+  constructor(uint daysAvailable,  bytes32 passwd)
+  public payable
+  {
+    require(daysAvailable != 0);
+    currDate = now;
+    owner = msg.sender;
+    finalDate = currDate + daysAvailable;
+    //Probably i should  do something like: unicPassw = keccak256("pass1", "pass2").
+    unicPassw = passwd;
+
+  }
+
+  modifier checkFinalDate()
+  {
+    require(finalDate < now);
+    _;
+  }
+
+
+  function reckoning(string firstPassw, string secondPassw) onlyIfRunning public returns (bool){
+    if (keccak256(firstPassw, secondPassw) == unicPassw) {
+      emit LogMoneySending(msg.sender, this.balance);
+      msg.sender.transfer(this.balance);
+      return true;
+    } else {
+      return false;
     }
+  }
 
-    modifier checkFinalDate()
-    {
-        require(finalDate < now);
-        _;
-    }
 
-    function getCurrentSubval() public returns (uint){
-        return getTokens();
-
-    }
-
-    function convertMoney()
-    public
-    payable
-    returns (bool success){
-        require(msg.value > 0);
-        convert(msg.value);
-        return true;
-    }
-
-    function reckoning(string firstPassw, string secondPassw) onlyIfRunning public returns (bool){
-        if (passwd1 == keccak256(firstPassw) && passwd2 == keccak256(secondPassw)) {
-            sendTokensTo(msg.sender);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function getTokensBalance() returns (uint){
-        return getCurrTokensAddr(msg.sender);
-    }
-
-    function cashBack() checkFinalDate onlyIfRunning public payable returns (bool success)
-    {
-        LogReturnMoney(msg.sender, this.balance);
-        msg.sender.transfer(this.balance);
-        clearTokenAmount();
-        return true;
-    }
+  function cashBack() checkFinalDate onlyIfRunning public returns (bool success)
+  {
+    require(owner == msg.sender);
+    emit LogReturnMoney(msg.sender, this.balance);
+    msg.sender.transfer(this.balance);
+    return true;
+  }
 }
