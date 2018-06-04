@@ -38,7 +38,7 @@ contract Remittance is Stoppable, Destroyable {
   }
 
 
-  function reckoning(string firstPassw, string secondPassw) onlyIfRunning public returns (bool){
+  function claimRemittance(string firstPassw, string secondPassw) onlyIfRunning public returns (bool){
     if (keccak256(firstPassw, secondPassw) == unicPassw) {
       emit LogMoneySending(msg.sender, this.balance);
       recipient.transfer(this.balance);
