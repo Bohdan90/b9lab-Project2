@@ -1,59 +1,58 @@
 pragma solidity ^0.4.4;
 
 
-
 import "./Destroyable.sol";
 import "./Stoppable.sol";
 
 contract Remittance is Stoppable, Destroyable {
 
-  address private owner;
-  address private recipient;
+  mapping(bytes32 => RemmitanceData) remData;
 
-  uint private finalDate;
-  uint256 private currDate;
-  bytes32 private unicPassw;
+  struct RemmitanceData {
+    address owner;
+    address recipient;
+    bytes32 unicPassw;
+    uint finalDate;
+    uint256 currDate;
+  }
 
+  RemmitanceData tempData;
+  event LogNewRemittance(bool isCreated);
   event LogMoneySending(address to, uint amount);
   event LogReturnMoney(address to, uint amount);
 
-  constructor(uint daysAvailable,address receiver,  bytes32 passwd)
-  public payable
-  {
+
+  function setRemittanceData(uint daysAvailable, address receiver, bytes32 passwd) public payable {
+    RemmitanceData tempRemitance;
     require(daysAvailable != 0);
     require(receiver != 0);
-    currDate = now;
-    owner = msg.sender;
-    finalDate = currDate + daysAvailable;
-    recipient = receiver;
-    //Probably i should  do something like: unicPassw = keccak256("pass1", "pass2").
-    unicPassw = passwd;
-
-  }
-
-  modifier checkFinalDate()
-  {
-    require(finalDate < now);
-    _;
+    tempRemitance.currDate = now;
+    tempRemitance.owner = msg.sender;
+    tempRemitance.finalDate = now + daysAvailable;
+    tempRemitance.recipient = receiver;
+    tempRemitance.unicPassw = passwd;
+    remData[passwd] = tempRemitance;
+    LogNewRemittance(true);
   }
 
 
   function claimRemittance(string firstPassw, string secondPassw) onlyIfRunning public returns (bool){
-    if (keccak256(firstPassw, secondPassw) == unicPassw) {
-      emit LogMoneySending(msg.sender, this.balance);
-      recipient.transfer(this.balance);
-      return true;
-    } else {
-      return false;
-    }
+    tempData = remData[keccak256(firstPassw, secondPassw)];
+    require(tempData.recipient != 0);
+    emit LogMoneySending(tempData.recipient, this.balance);
+    tempData.recipient.transfer(this.balance);
+    return true;
+
   }
 
 
-  function cashBack() checkFinalDate onlyIfRunning public returns (bool success)
+  function cashBack(string firstPassw, string secondPassw) onlyIfRunning public returns (bool success)
   {
-    require(owner == msg.sender);
-    emit LogReturnMoney(msg.sender, this.balance);
-    msg.sender.transfer(this.balance);
+    tempData = remData[keccak256(firstPassw, secondPassw)];
+    require(tempData.owner != 0);
+    require(tempData.finalDate < now);
+    emit LogReturnMoney(tempData.owner, this.balance);
+    tempData.owner.transfer(this.balance);
     return true;
   }
 }
