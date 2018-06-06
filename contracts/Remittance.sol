@@ -28,7 +28,7 @@ contract Remittance is Stoppable, Destroyable {
     tempRemitance.deadline = now + (daysAvailable *86400);
     tempRemitance.recipient = receiver;
     remData[hashPass] = tempRemitance;
-    LogNewRemittanceData(tempRemitance.deadline,tempRemitance.recipient, hashPass);
+    emit LogNewRemittanceData(tempRemitance.deadline,tempRemitance.recipient, hashPass);
   }
 
 
