@@ -58,8 +58,8 @@ contract Remittance is Stoppable, Destroyable {
     return true;
   }
 
-  function hashHelper(address addr, string passw) public pure returns (bytes32 hash) {
-    return keccak256(addr, passw);
+  function hashHelper(string passw) public pure returns (bytes32 hash) {
+    return keccak256(msg.sender, passw);
   }
 
 }
