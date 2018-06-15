@@ -25,38 +25,42 @@ contract Remittance is Stoppable, Destroyable {
 
     require(daysAvailable != 0);
     require(receiver != 0);
-    require( msg.value != 0);
+    require(msg.value != 0);
+    uint tempDeadline = now + (daysAvailable * 86400);
     remData[hashPass] = RemmitanceData({
-      owner: msg.sender,
-      recipient: receiver,
-      deadline: now + (daysAvailable * 86400),
-      balance: msg.value
+      owner : msg.sender,
+      recipient : receiver,
+      deadline : tempDeadline,
+      balance : msg.value
       });
-    emit LogNewRemittanceData(msg.sender, receiver, hashPass,remData[hashPass].deadline, msg.value);
+    emit LogNewRemittanceData(msg.sender, receiver, hashPass, tempDeadline, msg.value);
   }
 
 
   function claimRemittance(string firstPassw) onlyIfRunning public returns (bool){
-
-    RemmitanceData storage tempData = remData[hashHelper(firstPassw, msg.sender)];
+    bytes32 tempHash = hashHelper(firstPassw, msg.sender);
+    RemmitanceData storage tempData = remData[tempHash];
     require(tempData.recipient != 0);
-    require(tempData.balance != 0);
-    remData[hashHelper(firstPassw, msg.sender)].balance = 0;
-    emit LogClaimRemmitance(tempData.recipient, tempData.balance);
-    tempData.recipient.transfer(tempData.balance);
+    uint tempBalance = tempData.balance;
+    require(tempBalance != 0);
+    remData[tempHash].balance = 0;
+    emit LogClaimRemmitance(tempData.recipient, tempBalance);
+    tempData.recipient.transfer(tempBalance);
     return true;
 
   }
 
   function cashBack(string firstPassw) onlyIfRunning public returns (bool success)
   {
-    RemmitanceData storage tempData = remData[hashHelper(firstPassw, msg.sender)];
-    require(tempData.balance != 0);
+    bytes32 tempHash = hashHelper(firstPassw, msg.sender);
+    RemmitanceData storage tempData = remData[tempHash];
+    uint tempBalance = tempData.balance;
+    require(tempBalance != 0);
     require(tempData.owner != 0);
     require(tempData.deadline < now);
-    remData[hashHelper(firstPassw, msg.sender)].balance = 0;
-    emit LogCashBack(tempData.owner, tempData.balance);
-    tempData.owner.transfer(tempData.balance);
+    remData[tempHash].balance = 0;
+    emit LogCashBack(tempData.owner, tempBalance);
+    tempData.owner.transfer(tempBalance);
     return true;
   }
 
