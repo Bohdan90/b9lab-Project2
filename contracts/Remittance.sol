@@ -26,7 +26,9 @@ contract Remittance is Stoppable, Destroyable {
     require(daysAvailable != 0);
     require(receiver != 0);
     require(msg.value != 0);
+
     uint tempDeadline = now + (daysAvailable * 86400);
+    require(remData[hashPass].recipient == address(0));
     remData[hashPass] = RemmitanceData({
       owner : msg.sender,
       recipient : receiver,
